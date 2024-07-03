@@ -28,6 +28,8 @@ public class Part1 {
 		}
 	}
 	
+	enum Color {RED, GREEN}
+	
 	public List<Apple> inventory = new ArrayList<Apple>();
 	
 	public static List<Apple> filterGreenApples(List<Apple> inventory){
@@ -54,7 +56,7 @@ public class Part1 {
 		return "GREEN".equals(apple.getColor());
 	}
 	
-//	filterApples(inventory,  Apple::isGreenApple);
+//	filterApples(inventory,  Apple ::isGreenApple);
 	
 	
 	public static boolean isHeavyApple(Apple apple) {
@@ -75,5 +77,14 @@ public class Part1 {
 		return result;
 	}
 	
-	filterApples(inventory, (Apple a) -> a.getWeight() > 150);
+	
+	public static <T> List<T> filter(List<T> list, Predicate<T> p){
+		List<T> result = new ArrayList<>();
+		for(T e : list) {
+			if(p.test(e)) { result.add(e)}
+		}
+		return result;
+	}
+	
+	List<Apple> result = filterApples(inventory, (Apple apple) -> "RED".equals(apple.getColor()));
 }
