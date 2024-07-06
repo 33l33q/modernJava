@@ -81,10 +81,22 @@ public class Part1 {
 	public static <T> List<T> filter(List<T> list, Predicate<T> p){
 		List<T> result = new ArrayList<>();
 		for(T e : list) {
-			if(p.test(e)) { result.add(e)}
+			if(p.test(e)) { 
+				 result.add(e);
+			}
 		}
 		return result;
 	}
 	
-	List<Apple> result = filterApples(inventory, (Apple apple) -> "RED".equals(apple.getColor()));
+	List<Apple> result1 = filterApples(inventory, (Apple apple) -> "RED".equals(apple.getColor()));
+	
+	
+	inventory.sort(new Comparator<Apple>(){
+		public int compare(Apple a1, Apple a2) {
+			return a1.getWeight().compareTo(a2.getWeight());
+		}
+	});
+	
+	inventory.sort((Apple a1, Apple a2) -> a1.getWeight().compareTo(a2.getWeight()));
+}
 }
