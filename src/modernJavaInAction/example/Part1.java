@@ -12,6 +12,12 @@ public class Part1 {
 		public String color;
 		public int weight;
 		
+		public Apple() {
+			// TODO Auto-generated constructor stub
+		}
+		public Apple(java.awt.Color color2, Integer weight2) {
+			// TODO Auto-generated constructor stub
+		}
 		public String getColor() {
 			return color;
 		}

@@ -1,18 +1,25 @@
 package modernJavaInAction.example;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import modernJavaInAction.example.Part1.Apple;
 
 public class Part3 {
 
 	
+	private static final Color GREEN = null;
+
 	Comparator<Apple> byWeight = new Comparator<Apple>() {
 		public int compare(Apple a1, Apple a2) {
 			Integer a1Weight = a1.getWeight();
@@ -106,7 +113,58 @@ public class Part3 {
 	}
 	
 	
+	Supplier<Apple> c1 = Apple::new;
+	Apple a1 = c1.get();
+	
+	Supplier<Apple> c2 = () -> new Apple(); //람다표현식은 디폴트 생성자를 가진 Apple을 만든다!
+	Apple a2 = c2.get();
+
+	Function<Integer, Apple> c3 = (weight) -> new Apple();
+	Apple a3 = c3.apply(110);
+	
+//	Function<Integer, Apple> c4 = Apple::new;
+//	Apple a4 = c4.apply(110);
+
+	
+	List<Integer> weights = Arrays.asList(7,2,4,10);
+//	List<Apple> apples = map2(weights, Apple::new);
+	
+	BiFunction<Color, Integer, Apple> c5 = (color, weight) -> new Apple(color, weight);
+	BiFunction<Color, Integer, Apple> c6 = Apple::new;
+	Apple a5 = c5.apply(GREEN, 110);
+	
+	Arrays inventory;
+	
+
+	//1단계 코드 전달
+	public class AppleComparator implements Comparator<Apple>{
+		public int compare(Apple a1, Apple a2) {
+			return Integer.valueOf(a1.getWeight()).compareTo(Integer.valueOf(a2.getWeight()));
+		}
+	}
+	inventory.sort(new AppleComparator());
+	
+	//2단계 익명 클래스 사용
+	inventory.sort(new Comparator<Apple>() {
+		public int compare(Apple a1, apple a2) {
+			return Integer.valueOf(a1.getWeight()).compareTo(a2.getWeight());
+		}
+	}); 
+	
+	//3단계 람다 표현식 사용
+	inventory.sort((Apple a1, Apple a2) -> Integer.valueOf(a1.getWeight()).compareTo(Integer.valueOf(a2.getWeight())));
+
+	inventory.sort((a1, a2) -> Integer.valueOf(a1.getWeight()).compareTo(Integer.valueOf(a2.getWeight())));
+
+	Comparator<Apple> c = Comparator.comparing((Apple a) -> a.getWeight());
+	
+	inventory.sort(comparing(apple -> apple.getWeight()));
+	inventory.sort(comparing(Apple::getWeight));
+
+	
+	
 	public static void main(String[] args) {
+		
 		Part3 part3 = new Part3();
 
 		Runnable r1 = () -> System.out.println("hello world");
@@ -129,6 +187,7 @@ public class Part3 {
 	
 		List<Integer> l = part3.map2(Arrays.asList("lambdas","in","action"),(String s) -> s.length());
 		System.out.println(l);
+		
 	}
 	
 }
